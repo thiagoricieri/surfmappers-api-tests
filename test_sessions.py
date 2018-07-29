@@ -11,6 +11,9 @@ headers = {'Authorization': 'Bearer {}'.format(token)}
 def get_homepage_sessions():
   return requests.get(sm.route('sessions/last'), headers=headers)
 
+def get_photos_of(session):
+  return requests.get(sm.route('sessions/{}/photos'.format(session['_id'])), headers=headers)
+
 def first_session_from_homepage():
   return get_homepage_sessions().json()['albums'][0]
 
@@ -27,6 +30,6 @@ def test_photos_of_session():
 
 def test_sessions_of_photographer():
   first = first_session_from_homepage()
-  r = requests.get(sm.route('sessions/photographer/{}'.format(first['username'])), headers=headers)
+  r = get_photos_of(first)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'

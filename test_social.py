@@ -12,15 +12,15 @@ headers = {'Authorization': 'Bearer {}'.format(token)}
 def test_follow():
   first = first_session_from_homepage()
   user = first['photographer']
-  r = requests.post(sm.route('follow/{}'.format(user['_id'])), headers=headers)
-  assert r.status_code == 201, 'Request succeeded'
+  r = requests.post(sm.route('follow/{}'.format(user['username'])), headers=headers)
+  assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_unfollow():
   first = first_session_from_homepage()
   user = first['photographer']
-  r = requests.delete(sm.route('follow/{}'.format(user['_id'])), headers=headers)
-  assert r.status_code == 201, 'Request succeeded'
+  r = requests.delete(sm.route('follow/{}'.format(user['username'])), headers=headers)
+  assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_checkin():

@@ -28,7 +28,7 @@ def test_search_countries():
 
 def test_search_states():
   countries = get_countries()
-  country = countries[0]
+  country = countries.json()['countries'][0]
   r = requests.post(sm.route('search/{}/states'.format(country['_id'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'

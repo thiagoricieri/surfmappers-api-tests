@@ -12,16 +12,23 @@ token = get_token()
 headers = {'Authorization': 'Bearer {}'.format(token)}
 
 def get_agenda():
-  return requests.get(sm.route('agenda'), headers=headers)
+  params = {
+    "limit": 20,
+    "page": 1
+  }
+  return requests.get(sm.route('agenda'), headers=headers, params=params)
 
 def test_agenda():
   r = get_agenda()
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
+  assert r.json()['entries'] is not None, 'Agenda has entries'
 
 def test_add_to_agenda():
   spots = get_spots()
-  date = "%d/%d/%d %d:%d" % (now.dat, now.month, now.year, now.hour, now.minute)
+  assert spots.status_code == 200, 'Spots exist'
+  now = dt.datetime.now()
+  date = "%d/%d/%d %d:%d" % (now.day, now.month, now.year, now.hour, now.minute)
   queries = {
     "spot_id": spots[0]['_id'],
     "date": date
@@ -31,12 +38,16 @@ def test_add_to_agenda():
   assert r.json() is not None, 'Json result is valid'
 
 def test_users_agenda():
-  r = requests.get(sm.route('{}/agenda'.format(user['_id'])), headers=headers)
+  first = first_session_from_homepage()
+  user = first['photographer']
+  r = requests.get(sm.route('{}/agenda'.format(user['username'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_remove_from_agenda():
   agenda = get_agenda()
+  assert agenda.status_code == 200, 'Agenda returned correctly'
+  agenda = agenda.json()["entries"]
   r = requests.delete(sm.route('agenda/{}'.format(agenda[0]['_id'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
