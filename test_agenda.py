@@ -40,7 +40,8 @@ def test_add_to_agenda():
 def test_users_agenda():
   first = first_session_from_homepage()
   user = first['photographer']
-  r = requests.get(sm.route('{}/agenda'.format(user['username'])), headers=headers)
+  assert user["_id"] is not None, "User must have an id"
+  r = requests.get(sm.route('{}/agenda'.format(user['_id'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
@@ -51,3 +52,5 @@ def test_remove_from_agenda():
   r = requests.delete(sm.route('agenda/{}'.format(agenda[0]['_id'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
+
+print(first_session_from_homepage())

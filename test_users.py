@@ -1,6 +1,7 @@
 from utils import *
 from faker import Faker
 from test_auth import get_token
+from test_sessions import get_homepage_sessions, first_session_from_homepage
 import requests
 
 sm = Surfmappers()
@@ -14,26 +15,34 @@ def test_users_me():
   assert r.json() is not None, 'Json result is valid'
 
 def test_users_id():
-  user_id = "0"
-  r = requests.get(sm.route('users/{}'.format(user_id)), headers=headers)
+  first = first_session_from_homepage()
+  user = first['photographer']
+  assert 'username' in user, 'User has username property'
+  r = requests.get(sm.route('users/{}'.format(user['username'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_friends_of():
-  user_id = "0"
-  r = requests.get(sm.route('friends/{}'.format(user_id)), headers=headers)
+  first = first_session_from_homepage()
+  user = first['photographer']
+  assert 'username' in user, 'User has username property'
+  r = requests.get(sm.route('friends/{}'.format(user['username'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_request_friendship():
-  user_id = "0"
-  r = requests.get(sm.route('friends/{}'.format(user_id)), headers=headers)
+  first = first_session_from_homepage()
+  user = first['photographer']
+  assert 'username' in user, 'User has username property'
+  r = requests.get(sm.route('friends/{}'.format(user['username'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 
 def test_remove_friendship():
-  user_id = "0"
-  r = requests.delete(sm.route('friends/{}'.format(user_id)), headers=headers)
+  first = first_session_from_homepage()
+  user = first['photographer']
+  assert 'username' in user, 'User has username property'
+  r = requests.delete(sm.route('friends/{}'.format(user['username'])), headers=headers)
   assert r.status_code == 200, 'Request succeeded'
   assert r.json() is not None, 'Json result is valid'
 

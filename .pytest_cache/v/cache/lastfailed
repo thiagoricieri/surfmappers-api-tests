@@ -2,16 +2,9 @@
   "test_agenda.py::test_add_to_agenda": true,
   "test_agenda.py::test_remove_from_agenda": true,
   "test_agenda.py::test_users_agenda": true,
-  "test_cart.py::test_cart": true,
-  "test_cart.py::test_cart_get_shipping": true,
   "test_cart.py::test_cart_set_shipping": true,
-  "test_cart.py::test_cart_with_id": true,
-  "test_cart.py::test_convert_photo_to_frame": true,
-  "test_cart.py::test_remove_frame_from_cart": true,
   "test_search.py::test_search_states": true,
   "test_spots.py::test_get_spots": true,
-  "test_users.py::test_friends_of": true,
   "test_users.py::test_remove_friendship": true,
-  "test_users.py::test_request_friendship": true,
   "test_users.py::test_users_id": true
 }
